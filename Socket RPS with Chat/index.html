@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RPS Game</title>
+    <style>
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #form1 { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 2.75rem; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input1 { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input1:focus { outline: none; }
+      #form1 > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { vertical-align: bottom; list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; }
+      
+      #nickname { list-style-type: none; margin: 0; padding: 0; }
+      #nickname > li { padding: 0.5rem 1rem; }
+      #nickname > li:nth-child(odd) { background: #efefef; }
+    </style>
+  </head>
+  <body>
+    <ul id="nickname"></ul>
+    <form id="form1" action="">
+      <input id="input1">Add a Nickname</input><button>Submit</button>
+    </form>
+
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      var socket = io();
+
+      var messages = document.getElementById('messages');
+      var form = document.getElementById('form');
+      var form1 = document.getElementById('form1');
+      var input = document.getElementById('input');
+      var input1 = document.getElementById('input1');
+      // var nname = document.getElementById("nname")
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit('chat message', input.value);
+          input.value = '';
+        }
+        // if (nname.value) {
+        //   socket.emit('nickname', input.value);
+        //   input.value = '';
+        // }
+      });
+
+      form1.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input1.value) {
+          socket.emit('nickname', input1.value);
+          input1.value = ''
+        }
+      });
+
+      socket.on('chat message', function(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+  </body>
+<html>  
+<script>
+var result = 0;
+var won = 0;
+var lost = 0;
+var tie = 0;
+
+function MoveMade(move) {
+  cmove = Math.floor(Math.random() * 3);
+  
+  if (cmove == 0) {
+    if (move == 'Rock') {
+      result = "It's A Tie"
+      tie += 1
+    }
+    else if (move == 'Paper') {
+      result = "You Win!"
+      won += 1
+    }
+    else {
+      result = "You Lose :("
+      lost += 1
+    }
+  }
+  else if (cmove == 1) {
+    if (move == 'Rock') {
+      result = "You Lose :("
+      lost += 1
+    }
+    else if (move == 'Paper') {
+      result = "It's a Tie"
+      tie += 1
+    }
+    else {
+      result = "You Win!"
+      won += 1
+    }
+  }
+  else if (cmove == 2) {
+    if (move == 'Rock') {
+      result = "You Win!"
+      won += 1
+    }
+    else if (move == 'Paper') {
+      result = "You Lose :("
+      lost += 1
+    }
+    else {
+      result = "It's a Tie!"
+      tie += 1
+    }
+  }
+  else {
+    result = "Try Again"
+  }
+  alert(result)
+
+  document.getElementById("won").innerHTML = won;
+  document.getElementById("lost").innerHTML = lost;
+  document.getElementById("tie").innerHTML = tie;
+} </script>
+
+<body>  
+  <h1> Welcome to a Basic Game of Rock, Paper, Scissors </h1>
+  <b> This Game is played against the Computer </b>
+  <br>
+  <b> Play a Round </b>
+  <br>
+  <button id="Rock" onclick="MoveMade('Rock')">Rock</button>
+  <button id="Paper" onclick="MoveMade('Paper')">Paper</button>
+  <button id="Scissors" onclick="MoveMade('Scissors')">Scissors</button>
+  <br>
+  <p>Wins: <a id="won">0</a></p>
+  <p>Losses: <a id="lost">0</a></p>
+  <p>Ties: <a id="tie">0</a></p>
+
+</body>  
+  
+</html>  
+</html>
